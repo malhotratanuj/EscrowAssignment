@@ -16,6 +16,8 @@ function App() {
   const [account, setAccount] = useState();
   const [signer, setSigner] = useState();
   const [loading, setLoading] = useState(false);
+  const [showConfirmationModal, setShowConfirmationModal] = useState(false);
+  const [contractToDelete, setContractToDelete] = useState(null);
 
   useEffect(() => {
     async function getAccounts() {
@@ -29,6 +31,8 @@ function App() {
   }, [account]);
 
   const toggleLoading = (isLoading) => setLoading(isLoading);
+  const openConfirmationModal = () => setShowConfirmationModal(true);
+  const closeConfirmationModal = () => setShowConfirmationModal(false);
 
   async function newContract() {
     const beneficiary = document.getElementById('beneficiary').value;
@@ -55,14 +59,28 @@ function App() {
         await approve(escrowContract, signer);
       },
       handleDelete: async (contractAddress) => {
-        // Remove the contract from the escrows array
-        const updatedEscrows = escrows.filter(e => e.address !== contractAddress);
-        setEscrows(updatedEscrows);
+        setContractToDelete(contractAddress);
+        openConfirmationModal();
       }
     };
 
     setEscrows([...escrows, escrow]);
   }
+
+  const handleConfirmDelete = () => {
+    // Find the index of the contract to delete
+    const index = escrows.findIndex((escrow) => escrow.address === contractToDelete);
+
+    // If the contract is found, remove it from the array
+    if (index !== -1) {
+      const updatedEscrows = [...escrows];
+      updatedEscrows.splice(index, 1);
+      setEscrows(updatedEscrows);
+    }
+
+    // Close the confirmation modal
+    closeConfirmationModal();
+  };
 
   return (
     <>
@@ -120,6 +138,18 @@ function App() {
         <div className="loading">
           <SyncLoader color={'#36D7B7'} loading={loading} size={15} />
           <p>Approving...</p>
+        </div>
+      )}
+
+      {showConfirmationModal && (
+        <div className="modal">
+          <div className="modal-content">
+            <p>Are you sure you want to delete this contract?</p>
+            <div className="modal-buttons">
+              <button onClick={handleConfirmDelete}>Yes</button>
+              <button onClick={closeConfirmationModal}>No</button>
+            </div>
+          </div>
         </div>
       )}
     </>

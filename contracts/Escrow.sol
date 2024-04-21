@@ -18,6 +18,7 @@ contract Escrow {
 
     event Approved(uint);
     event ContractDeleted(address indexed _address);
+    event TimelockSet(uint _unlockTime);
 
     function approve() external {
         require(msg.sender == arbiter);
@@ -42,6 +43,7 @@ contract Escrow {
     function setTimelock(uint _unlockTime) external {
         require(msg.sender == arbiter, "Only arbiter can set timelock");
         unlockTime = _unlockTime;
+        emit TimelockSet(unlockTime);
     }
 
     function withdraw() external {

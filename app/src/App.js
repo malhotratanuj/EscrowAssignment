@@ -34,6 +34,9 @@ function App() {
   const openConfirmationModal = () => setShowConfirmationModal(true);
   const closeConfirmationModal = () => setShowConfirmationModal(false);
 
+
+  //arbiter = broker
+  //beneficiary = recipient
   async function newContract() {
     const beneficiary = document.getElementById('beneficiary').value;
     const arbiter = document.getElementById('arbiter').value;
@@ -88,19 +91,19 @@ function App() {
         <h1 className="text-xl font-bold mb-4">New Contract</h1>
         <div className="mb-4">
           <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="arbiter">
-            Arbiter Address
+            Broker's Address
           </label>
-          <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="arbiter" type="text" placeholder="Arbiter Address" />
+          <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="arbiter" type="text" placeholder="Broker Address" />
         </div>
         <div className="mb-4">
           <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="beneficiary">
-            Beneficiary Address
+            Recipient's Address
           </label>
-          <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="beneficiary" type="text" placeholder="Beneficiary Address" />
+          <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="beneficiary" type="text" placeholder="Recipient Address" />
         </div>
         <div className="mb-4">
           <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="wei">
-            Deposit Amount (in Wei)
+            Fund Amount (in Wei)
           </label>
           <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="wei" type="text" placeholder="Deposit Amount" />
         </div>

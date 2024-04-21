@@ -73,7 +73,7 @@ function App() {
     if (!isNaN(unlockTime)) {
       await setTimelock(contractToSetTimelock, signer, unlockTime);
       closeTimelockModal(); // Close the Timelock modal after setting the timelock
-      // Update the escrow object to indicate that the timelock is set
+      // amd ..Update the escrow object to indicate that the timelock is set
       const updatedEscrows = escrows.map((escrow) => {
         if (escrow.address === contractToSetTimelock) {
           return {
@@ -87,7 +87,7 @@ function App() {
       setDisableApproveButton(true);
       setTimeout(() => {
         setDisableApproveButton(false);
-      }, 60000); // 60000 milliseconds = 60 seconds
+      }, 60000); 
       setShowTimeSetPrompt(true);
       setTimeout(() => {
         setShowTimeSetPrompt(false);
@@ -108,9 +108,9 @@ function App() {
       value: value.toString(),
       isTimelockSet: false, 
       handleApprove: async () => {
-        toggleLoading(true); // Show loading animation
+        toggleLoading(true); // loading animation
         escrowContract.on('Approved', () => {
-          toggleLoading(false); // Hide loading animation after approval
+          toggleLoading(false); // Hide animation after approval
           document.getElementById(escrowContract.address).className =
             'complete';
           document.getElementById(escrowContract.address).innerText =

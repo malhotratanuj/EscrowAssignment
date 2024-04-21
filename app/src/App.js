@@ -83,76 +83,65 @@ function App() {
   };
 
   return (
-    <>
-      <div className="contract">
-        <h1> New Contract </h1>
-        <label>
-          Arbiter Address
-          <input type="text" id="arbiter" />
-        </label>
-
-        <label>
-          Beneficiary Address
-          <input type="text" id="beneficiary" />
-        </label>
-
-        <label>
-          Deposit Amount (in Wei)
-          <input type="text" id="wei" />
-        </label>
-
-        <div
-          className="button"
-          id="deploy"
-          onClick={(e) => {
-            e.preventDefault();
-
-            newContract();
-          }}
-        >
-          Deploy
+    <div className="container mx-auto px-4 py-8">
+      <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+        <h1 className="text-xl font-bold mb-4">New Contract</h1>
+        <div className="mb-4">
+          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="arbiter">
+            Arbiter Address
+          </label>
+          <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="arbiter" type="text" placeholder="Arbiter Address" />
         </div>
+        <div className="mb-4">
+          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="beneficiary">
+            Beneficiary Address
+          </label>
+          <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="beneficiary" type="text" placeholder="Beneficiary Address" />
+        </div>
+        <div className="mb-4">
+          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="wei">
+            Deposit Amount (in Wei)
+          </label>
+          <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="wei" type="text" placeholder="Deposit Amount" />
+        </div>
+        <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" onClick={newContract}>
+          Deploy
+        </button>
       </div>
 
-      <div className="existing-contracts">
-        <h1> Existing Contracts </h1>
-
-        <div id="container">
-          {escrows.map((escrow) => {
-            return (
-              <div key={escrow.address}>
-                <Escrow {...escrow} />
-                <div
-                  className="button"
-                  onClick={() => escrow.handleDelete(escrow.address)}
-                >
-                  Delete Contract
-                </div>
-              </div>
-            );
-          })}
+      <div>
+        <h1 className="text-xl font-bold mb-4">Existing Contracts</h1>
+        <div>
+          {escrows.map((escrow) => (
+            <div key={escrow.address} className="bg-white shadow-md rounded px-8 py-6 mb-4">
+              <Escrow {...escrow} />
+              <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" onClick={() => escrow.handleDelete(escrow.address)}>
+                Delete Contract
+              </button>
+            </div>
+          ))}
         </div>
       </div>
 
       {loading && (
-        <div className="loading">
+        <div className="flex items-center justify-center mt-8">
           <SyncLoader color={'#36D7B7'} loading={loading} size={15} />
-          <p>Approving...</p>
+          <p className="ml-2">Approving...</p>
         </div>
       )}
 
       {showConfirmationModal && (
-        <div className="modal">
-          <div className="modal-content">
-            <p>Are you sure you want to delete this contract?</p>
-            <div className="modal-buttons">
-              <button onClick={handleConfirmDelete}>Yes</button>
-              <button onClick={closeConfirmationModal}>No</button>
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-800 bg-opacity-50">
+          <div className="bg-white shadow-md rounded px-8 py-6">
+            <p className="text-lg font-bold mb-4">Are you sure you want to delete this contract?</p>
+            <div className="flex justify-end">
+              <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mr-2 focus:outline-none focus:shadow-outline" onClick={handleConfirmDelete}>Yes</button>
+              <button className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" onClick={closeConfirmationModal}>No</button>
             </div>
           </div>
         </div>
       )}
-    </>
+    </div>
   );
 }
 

@@ -34,7 +34,6 @@ function App() {
   const openConfirmationModal = () => setShowConfirmationModal(true);
   const closeConfirmationModal = () => setShowConfirmationModal(false);
 
-
   //arbiter = broker
   //beneficiary = recipient
   async function newContract() {

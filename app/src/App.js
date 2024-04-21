@@ -2,6 +2,7 @@ import { ethers } from 'ethers';
 import { useEffect, useState } from 'react';
 import deploy from './deploy';
 import Escrow from './Escrow';
+import { SyncLoader } from 'react-spinners';
 
 const provider = new ethers.providers.Web3Provider(window.ethereum);
 
@@ -14,6 +15,7 @@ function App() {
   const [escrows, setEscrows] = useState([]);
   const [account, setAccount] = useState();
   const [signer, setSigner] = useState();
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     async function getAccounts() {
@@ -25,6 +27,8 @@ function App() {
 
     getAccounts();
   }, [account]);
+
+  const toggleLoading = (isLoading) => setLoading(isLoading);
 
   async function newContract() {
     const beneficiary = document.getElementById('beneficiary').value;
@@ -39,7 +43,9 @@ function App() {
       beneficiary,
       value: value.toString(),
       handleApprove: async () => {
+        toggleLoading(true); // Show loading animation
         escrowContract.on('Approved', () => {
+          toggleLoading(false); // Hide loading animation after approval
           document.getElementById(escrowContract.address).className =
             'complete';
           document.getElementById(escrowContract.address).innerText =
@@ -48,6 +54,11 @@ function App() {
 
         await approve(escrowContract, signer);
       },
+      handleDelete: async (contractAddress) => {
+        // Remove the contract from the escrows array
+        const updatedEscrows = escrows.filter(e => e.address !== contractAddress);
+        setEscrows(updatedEscrows);
+      }
     };
 
     setEscrows([...escrows, escrow]);
@@ -90,10 +101,27 @@ function App() {
 
         <div id="container">
           {escrows.map((escrow) => {
-            return <Escrow key={escrow.address} {...escrow} />;
+            return (
+              <div key={escrow.address}>
+                <Escrow {...escrow} />
+                <div
+                  className="button"
+                  onClick={() => escrow.handleDelete(escrow.address)}
+                >
+                  Delete Contract
+                </div>
+              </div>
+            );
           })}
         </div>
       </div>
+
+      {loading && (
+        <div className="loading">
+          <SyncLoader color={'#36D7B7'} loading={loading} size={15} />
+          <p>Approving...</p>
+        </div>
+      )}
     </>
   );
 }
